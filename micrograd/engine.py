@@ -35,8 +35,8 @@ class Value:
         return out
 
     def __pow__(self, other):
-        assert isinstance(other, (int, float)), "only supporting int/float powers for now"#这句看不太懂？
-        out = Value(self.data**other, (self,), f'**{other}')#python支持**为幂次方，f''不太懂？children只有self？
+        assert isinstance(other, (int, float)), "only supporting int/float powers for now"#assert是断言，断言other为int和float中的一种，断言错了报错后面字符串的内容
+        out = Value(self.data**other, (self,), f'**{other}')#python支持**为幂次方，f''是输出字符串{other}是格式化？children这里，输出值out是由self一个value实例得来self**常数，所以只有一个
 
         def _backward():
             self.grad += (other * self.data**(other-1)) * out.grad
@@ -45,7 +45,7 @@ class Value:
         return out
 
     def relu(self):
-        out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')#这里也是只有self
+        out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')#和pow相同
 
         def _backward():
             self.grad += (out.data > 0) * out.grad
@@ -70,7 +70,7 @@ class Value:
         self.grad = 1
         for v in reversed(topo):#反转拓扑序列，从输出值开始遍历每一个节点更新梯度，实现反向传播
             v._backward()
-    #这里所有都是python内置魔法函数？
+    #这里所有都是python内置魔法函数，嗯正面计算无法计算python会反过来试试
     def __neg__(self): # -self
         return self * -1
 
