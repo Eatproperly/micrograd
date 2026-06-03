@@ -6,7 +6,8 @@ class Value:
         self.data = data
         self.grad = 0
         # internal variables used for autograd graph construction
-        #这里backward既作为value对象的属性，但是python的奇妙就在于此，python中函数是普通对象，可以赋值给任意的变量或属性，value作为类也是对象也可以作为函数使用，如nn.py中的mlp(x)
+        #这里backward既作为value对象的属性，但是python的奇妙就在于此，python中函数是普通对象，可以赋值给任意的变量或属性，value作为类也是对象,也可以作为函数使用,比如实例化，
+        #实例化后的对象也可以作为函数，如nn.py中的mlp(x)，触发魔法函数call
         #这里的backward通过函数来赋值，而且这个函数无返回值，是操作函数，可以看到初始化为none
         self._backward = lambda: None
         self._prev = set(_children)#children是元组，set(children)得到集合,children为空，则为空集合
@@ -36,7 +37,8 @@ class Value:
 
     def __pow__(self, other):
         assert isinstance(other, (int, float)), "only supporting int/float powers for now"#assert是断言，断言other为int和float中的一种，断言错了报错后面字符串的内容
-        out = Value(self.data**other, (self,), f'**{other}')#python支持**为幂次方，f''是输出字符串{other}是格式化？children这里，输出值out是由self一个value实例得来self**常数，所以只有一个
+        out = Value(self.data**other, (self,), f'**{other}')#python支持**为幂次方，f''是输出字符串{other}是占位符，可以放任何python表达式。
+        #children这里，输出值out是由self一个value实例得来self**常数，所以只有一个
 
         def _backward():
             self.grad += (other * self.data**(other-1)) * out.grad
