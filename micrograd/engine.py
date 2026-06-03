@@ -6,10 +6,10 @@ class Value:
         self.data = data
         self.grad = 0
         # internal variables used for autograd graph construction
-        #这里backward既作为value对象的属性，但是python的奇妙就在于此，value作为类/对象也可以作为函数，对象的属性也可以作为函数使用
+        #这里backward既作为value对象的属性，但是python的奇妙就在于此，python中函数是普通对象，可以赋值给任意的变量或属性，value作为类也是对象也可以作为函数使用，如nn.py中的mlp(x)
         #这里的backward通过函数来赋值，而且这个函数无返回值，是操作函数，可以看到初始化为none
         self._backward = lambda: None
-        self._prev = set(_children)#children是元组，set(children)得到空集合
+        self._prev = set(_children)#children是元组，set(children)得到集合,children为空，则为空集合
         self._op = _op # the op that produced this node, for graphviz / debugging / etc操作符，画图用的
     #魔法函数，每一个运算后返回value类型的out
     def __add__(self, other):
