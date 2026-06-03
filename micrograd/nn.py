@@ -39,7 +39,7 @@ class Layer(Module):#神经元某一层
     def parameters(self):
         result = []
         for n in self.neurons:
-            for p in n.paramters():
+            for p in n.parameters():
                 result.append(p)
         return result
     #为了调试，其中str(neuron)魔法函数会默认调用__repr__
