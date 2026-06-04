@@ -49,4 +49,3 @@ for step in range(100):
         # p -= p.grad * 0.01
         p.data -= p.grad * 0.01
     print(f"step {step}, loss {loss.data:.4f}")
-print(sum(1,2))
