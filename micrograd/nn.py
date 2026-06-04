@@ -11,7 +11,7 @@ class Module:
         return []
 
 class Neuron(Module):#神经元
-     # 构造函数 nin是每个神经元张量维数，可以理解为一个列向量组，nonlin是非线性
+     # 构造函数 nin是每个神经元张量维数，可以理解为一个列向量组，nonlin是非线性，看w的随机生成，每一维都会对应一个权重
     def __init__(self, nin, nonlin=True):
         self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]#这里的value调用engine.py，那里定义好了所有计算规则。使用*、+等都会自动调用相应魔法函数
         self.b = Value(0)
